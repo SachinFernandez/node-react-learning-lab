@@ -1,0 +1,12 @@
+import { Box, Stack, Typography } from "@mui/material";
+import CodeBlock from "../components/common/CodeBlock.jsx";
+import { AuthExplorer, AuthFlow, AuthLesson } from "../components/common/AuthLesson.jsx";
+import SectionCard from "../components/common/SectionCard.jsx";
+
+function PasswordSecurity() {
+  const learn = <Stack spacing={2}><SectionCard title="Protect passwords"><Typography color="text.secondary">Never store plaintext passwords. Password hashing is one-way verification, while encryption is designed to be reversible with a key. Store only a password hash and compare a login password against it.</Typography></SectionCard><SectionCard title="Salt and bcrypt"><Typography color="text.secondary">A salt makes hashes resistant to precomputed attacks. bcrypt is a purpose-built password hashing library that includes salting and a work factor. Registration hashes the password; login compares the submitted password with the stored hash.</Typography></SectionCard><SectionCard title="Security boundaries"><Typography color="text.secondary">Validate input, use HTTPS in production, avoid leaking internal errors, and keep credentials out of source code. CORS is not authentication.</Typography></SectionCard></Stack>;
+  const code = <SectionCard title="Conceptual bcrypt usage"><CodeBlock filename="authService.js">{"const hash = await bcrypt.hash(password, 12);\nconst matches = await bcrypt.compare(password, hash);"}</CodeBlock></SectionCard>;
+  return <AuthLesson lesson="23" title="Password Security" subtitle="Learn how secure applications hash and verify passwords." learn={learn} code={code} tryIt={<AuthExplorer title="Conceptual Password Lifecycle" subtitle="No real passwords or credentials are used." options={{ registration: { label: "Registration", title: "Hash before storage", steps: ["Password is submitted", "bcrypt creates a salted hash", "Only the hash is stored"] }, login: { label: "Login", title: "Verify password", steps: ["Password is submitted", "bcrypt compares it with stored hash", "Match or reject is returned"] } }} />} flow={<AuthFlow title="Password lifecycle" steps={["Password", "Hash", "Stored hash", "Login password", "Compare with hash", "Match or reject"]} />} />;
+}
+
+export default PasswordSecurity;

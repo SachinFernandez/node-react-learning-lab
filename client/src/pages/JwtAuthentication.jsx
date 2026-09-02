@@ -1,0 +1,12 @@
+import { Box, Stack, Typography } from "@mui/material";
+import CodeBlock from "../components/common/CodeBlock.jsx";
+import { AuthExplorer, AuthFlow, AuthLesson } from "../components/common/AuthLesson.jsx";
+import SectionCard from "../components/common/SectionCard.jsx";
+
+function JwtAuthentication() {
+  const learn = <Stack spacing={2}><SectionCard title="Authentication and JWTs"><Typography color="text.secondary">Authentication confirms identity. A JWT is a signed token commonly sent with a protected request as <Box component="code">Authorization: Bearer &lt;token&gt;</Box>. Its three parts are header, payload, and signature.</Typography></SectionCard><SectionCard title="Signing is not encryption"><Typography color="text.secondary">JWT payloads are encoded, not inherently encrypted. Do not place sensitive data in them. A signature helps verify integrity, and expiration limits how long a token can be used. Keep signing secrets in secure configuration, never source code.</Typography></SectionCard><SectionCard title="Authentication is not authorization"><Typography color="text.secondary">A valid token identifies a caller; authorization still decides what that caller is permitted to do.</Typography></SectionCard></Stack>;
+  const code = <SectionCard title="Sign and verify"><CodeBlock filename="authService.js">{"const token = jwt.sign(\n  { userId: user.id },\n  process.env.JWT_SECRET,\n  { expiresIn: \"1h\" }\n);\n\njwt.verify(token, process.env.JWT_SECRET);"}</CodeBlock></SectionCard>;
+  return <AuthLesson lesson="24" title="JWT Authentication" subtitle="Learn how signed tokens carry identity between a client and protected APIs." learn={learn} code={code} tryIt={<AuthExplorer title="Conceptual JWT Explorer" subtitle="The token shown is illustrative and cannot authenticate anything." options={{ login: { label: "Login", title: "Example token flow", steps: ["Credentials are verified", "Server generates a signed token", "Client receives example.token.signature", "Client sends Bearer token with protected request"] } }} />} flow={<AuthFlow title="JWT flow" steps={["Login", "Credentials verified", "Token generated", "Client receives token", "Bearer token sent", "Protected request"]} />} />;
+}
+
+export default JwtAuthentication;
