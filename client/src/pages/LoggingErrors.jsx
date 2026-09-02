@@ -1,0 +1,13 @@
+import { Stack, Typography } from "@mui/material";
+import { ProductionExplorer, ProductionFlow, ProductionLesson } from "../components/common/ProductionLesson.jsx";
+import SectionCard from "../components/common/SectionCard.jsx";
+
+const outcomes = { success: { label: "Successful Request", title: "Info log and success", steps: ["Request receives a correlation ID", "App handles the request", "Info-level event is recorded", "Client receives a normal response"], result: "200 response without sensitive details" }, validation: { label: "Validation Error", title: "Warn log and safe client error", steps: ["Request fails validation", "Warn-level event records safe context", "App returns a clear 400 response"], result: "400 response with safe validation message", error: true }, unexpected: { label: "Unexpected Error", title: "Error log and safe client error", steps: ["Unexpected failure reaches error handler", "Error-level event records safe diagnostic context", "Client receives a generic 500 response"], result: "500 response without stack traces or secrets", error: true } };
+
+function LoggingErrors() {
+  const learn = <Stack spacing={2}><SectionCard title="Useful production logging"><Typography color="text.secondary">Debug, info, warn, and error levels communicate severity. Structured logs make events easier to search, and request or correlation IDs help trace one request through a system.</Typography></SectionCard><SectionCard title="Safe errors"><Typography color="text.secondary">Centralized error handling can return consistent client responses while logs retain safe diagnostic context. Never log secrets, passwords, tokens, or internal stack traces for clients.</Typography></SectionCard></Stack>;
+  const code = <SectionCard title="Safe error response concept"><Typography color="text.secondary">Production logs should record useful context without sensitive data. Client responses should be concise and avoid exposing internal implementation details.</Typography></SectionCard>;
+  return <ProductionLesson lesson="33" title="Logging & Production Errors" subtitle="Learn how applications record useful events and return safe production errors." learn={learn} code={code} tryIt={<ProductionExplorer title="Production Error Explorer" subtitle="Choose a conceptual request outcome." options={outcomes} />} flow={<ProductionFlow title="Request and error flow" steps={["Request", "Application", "Logging or error handler", "Safe response"]} />} />;
+}
+
+export default LoggingErrors;

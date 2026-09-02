@@ -1,0 +1,14 @@
+import { Box, Stack, Typography } from "@mui/material";
+import CodeBlock from "../components/common/CodeBlock.jsx";
+import { ProductionExplorer, ProductionFlow, ProductionLesson } from "../components/common/ProductionLesson.jsx";
+import SectionCard from "../components/common/SectionCard.jsx";
+
+const environments = { development: { label: "Development", title: "Development configuration", steps: ["Local tools use development settings", "Verbose diagnostics can help debugging", "Use a local API address where appropriate"] }, test: { label: "Test", title: "Test configuration", steps: ["Tests use controlled configuration", "External side effects should be isolated", "Test data should not be production data"] }, production: { label: "Production", title: "Production configuration", steps: ["Deploy uses externally supplied configuration", "Secrets stay outside source control", "Safe errors and HTTPS are required"] } };
+
+function EnvironmentConfig() {
+  const learn = <Stack spacing={2}><SectionCard title="Environment-specific configuration"><Typography color="text.secondary">Development, test, and production environments need different configuration. Keeping configuration separate from business logic makes deployments safer and easier to reason about.</Typography></SectionCard><SectionCard title="Environment variables"><Typography color="text.secondary">Node.js reads server configuration through <Box component="code">process.env</Box>. A <Box component="code">.env</Box> file is a local configuration convention, not security by itself. Secrets must never be committed or exposed to clients.</Typography></SectionCard><SectionCard title="Frontend configuration"><Typography color="text.secondary">Vite exposes variables prefixed with <Box component="code">VITE_</Box> through <Box component="code">import.meta.env</Box>. Frontend environment variables are bundled for the browser and are not secrets.</Typography></SectionCard></Stack>;
+  const code = <Stack spacing={2}><SectionCard title="Server environment values"><CodeBlock filename="server.js">{"const port = process.env.PORT;\nconst environment = process.env.NODE_ENV;"}</CodeBlock></SectionCard><SectionCard title="Vite environment value"><CodeBlock filename="apiClient.js">{"const apiUrl = import.meta.env.VITE_API_URL;"}</CodeBlock></SectionCard></Stack>;
+  return <ProductionLesson lesson="32" title="Environment & Configuration" subtitle="Learn how applications use environment-specific configuration safely." learn={learn} code={code} tryIt={<ProductionExplorer title="Environment Explorer" subtitle="Conceptual configuration differences only." options={environments} />} flow={<ProductionFlow title="Configuration flow" steps={["Environment variables", "Configuration", "Application"]} />} />;
+}
+
+export default EnvironmentConfig;
