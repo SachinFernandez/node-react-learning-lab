@@ -2,12 +2,14 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout.jsx";
 import Dashboard from "../pages/Dashboard.jsx";
 import BlockingVsNonBlocking from "../pages/BlockingVsNonBlocking.jsx";
+import AsyncJavaScript from "../pages/AsyncJavaScript.jsx";
 import EventLoop from "../pages/EventLoop.jsx";
+import ModulesAndNpm from "../pages/ModulesAndNpm.jsx";
 import NodeIntroduction from "../pages/NodeIntroduction.jsx";
 import NodeRuntime from "../pages/NodeRuntime.jsx";
 
 function AppRoutes() {
-  return <Routes><Route element={<MainLayout />}><Route index element={<Dashboard />} /><Route path="learn/node-introduction" element={<NodeIntroduction />} /><Route path="learn/node-runtime" element={<NodeRuntime />} /><Route path="learn/event-loop" element={<EventLoop />} /><Route path="learn/blocking-vs-non-blocking" element={<BlockingVsNonBlocking />} /><Route path="*" element={<Navigate to="/" replace />} /></Route></Routes>;
+  return <Routes><Route element={<MainLayout />}><Route index element={<Dashboard />} /><Route path="learn/node-introduction" element={<NodeIntroduction />} /><Route path="learn/node-runtime" element={<NodeRuntime />} /><Route path="learn/event-loop" element={<EventLoop />} /><Route path="learn/blocking-vs-non-blocking" element={<BlockingVsNonBlocking />} /><Route path="learn/modules-npm" element={<ModulesAndNpm />} /><Route path="learn/async-javascript" element={<AsyncJavaScript />} /><Route path="*" element={<Navigate to="/" replace />} /></Route></Routes>;
 }
 
 export default AppRoutes;
