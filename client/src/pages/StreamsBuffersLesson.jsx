@@ -1,0 +1,18 @@
+import { useState } from "react";
+import { Box, Grid, Stack, Tab, Tabs, ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
+import CodeBlock from "../components/common/CodeBlock.jsx";
+import { CoreLesson, FlowCards } from "../components/common/CoreLesson.jsx";
+import SectionCard from "../components/common/SectionCard.jsx";
+
+function StreamsBuffersLesson() {
+  const learn = <Stack spacing={2}><SectionCard title="Buffers"><Typography color="text.secondary">A Buffer represents binary data. <Box component="code">Buffer.from</Box> encodes text into bytes, and <Box component="code">buffer.toString()</Box> decodes it. A Buffer is data in memory; it is not the same thing as a Stream.</Typography></SectionCard><SectionCard title="Streams"><Typography color="text.secondary">Streams process data incrementally in chunks. Node.js provides readable, writable, transform, and duplex stream types. Streams can help with large or continuous data, but they do not automatically improve every workload.</Typography></SectionCard><SectionCard title="Backpressure"><Typography color="text.secondary">At a high level, backpressure occurs when a consumer is slower than a producer. Stream APIs coordinate this flow to avoid unbounded buffering.</Typography></SectionCard></Stack>;
+  const code = <Stack spacing={2}><SectionCard title="Buffer example"><CodeBlock filename="buffer.js">{"const buffer = Buffer.from(\"Node.js\");\nconsole.log(buffer);\nconsole.log(buffer.toString());"}</CodeBlock></SectionCard><SectionCard title="Readable stream"><CodeBlock filename="stream.js">{"import { createReadStream } from \"node:fs\";\n\nconst stream = createReadStream(\"./large-file.txt\", {\n  encoding: \"utf8\"\n});\n\nstream.on(\"data\", (chunk) => {\n  console.log(chunk);\n});"}</CodeBlock></SectionCard></Stack>;
+  return <CoreLesson lesson="12" title="Streams & Buffers" subtitle="Learn how Node.js represents binary data and processes data in chunks." learn={learn} code={code} tryIt={<StreamExplorer />} flow={<Stack spacing={2}><FlowCards flows={[{ title: "Stream flow", steps: ["Source", "Readable stream", "Chunks", "Processing", "Writable destination"] }]} /><Typography variant="body2" color="text.secondary">Backpressure matters when a consumer may be slower than its producer.</Typography></Stack>} />;
+}
+
+function StreamExplorer() {
+  const [mode, setMode] = useState("stream");
+  return <Stack spacing={2}><SectionCard title="Stream vs Whole File" subtitle="A conceptual comparison; no file is read from React."><ToggleButtonGroup exclusive value={mode} onChange={(event, next) => next && setMode(next)}><ToggleButton value="whole">Whole file</ToggleButton><ToggleButton value="stream">Stream</ToggleButton></ToggleButtonGroup><Box sx={{ mt: 2, p: 2, border: "1px solid #e2e8f0", borderRadius: 2, backgroundColor: "#f8fafc" }}>{mode === "whole" ? <Typography>Load everything → process</Typography> : <Stack spacing={0.75}><Typography>Chunk 1 → process</Typography><Typography>Chunk 2 → process</Typography><Typography>Chunk 3 → process</Typography></Stack>}</Box></SectionCard><SectionCard title="Buffer Explorer"><Typography variant="body2" color="text.secondary">Text: <strong>Node.js</strong></Typography><Typography variant="body2" sx={{ mt: 1 }}>Buffer bytes: <Box component="code">4e 6f 64 65 2e 6a 73</Box></Typography><Typography variant="body2" sx={{ mt: 1 }}>Decoded text: <strong>Node.js</strong></Typography></SectionCard></Stack>;
+}
+
+export default StreamsBuffersLesson;
