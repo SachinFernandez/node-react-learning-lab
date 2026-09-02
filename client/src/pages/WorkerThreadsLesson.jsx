@@ -1,0 +1,12 @@
+import { Box, Stack, Typography } from "@mui/material";
+import CodeBlock from "../components/common/CodeBlock.jsx";
+import { AdvancedExplorer, AdvancedFlow, AdvancedLesson } from "../components/common/AdvancedLesson.jsx";
+import SectionCard from "../components/common/SectionCard.jsx";
+
+function WorkerThreadsLesson() {
+  const learn = <Stack spacing={2}><SectionCard title="CPU work and the main thread"><Typography color="text.secondary">CPU-heavy JavaScript can block the main JavaScript thread. The built-in <Box component="code">worker_threads</Box> module creates separate JavaScript execution threads that communicate by messages.</Typography></SectionCard><SectionCard title="Workers"><Typography color="text.secondary"><Box component="code">Worker</Box> starts worker code, <Box component="code">workerData</Box> passes initial data, and <Box component="code">parentPort</Box> sends messages back. Workers have setup and communication overhead, so they help mainly with CPU-intensive JavaScript, not automatically with ordinary I/O.</Typography></SectionCard></Stack>;
+  const code = <Stack spacing={2}><SectionCard title="Create a worker"><CodeBlock filename="main.js">{"import { Worker } from \"node:worker_threads\";\n\nconst worker = new Worker(\n  new URL(\"./worker.js\", import.meta.url),\n  { workerData: { value: 10 } }\n);\n\nworker.on(\"message\", console.log);\nworker.on(\"error\", console.error);"}</CodeBlock></SectionCard><SectionCard title="Worker code"><CodeBlock filename="worker.js">{"import { parentPort, workerData } from \"node:worker_threads\";\n\nconst result = workerData.value * 2;\nparentPort.postMessage(result);"}</CodeBlock></SectionCard></Stack>;
+  return <AdvancedLesson lesson="27" title="Worker Threads" subtitle="Learn when separate JavaScript threads help CPU-intensive Node.js work." learn={learn} code={code} tryIt={<AdvancedExplorer title="Conceptual Worker Comparison" subtitle="No real heavy computation runs in the browser." options={{ main: { label: "Main Thread CPU Work", title: "Main thread is blocked", steps: ["Main thread starts CPU work", "CPU task occupies the thread", "Other JavaScript must wait"] }, worker: { label: "Worker Thread", title: "Main thread remains available", steps: ["Main thread starts Worker", "workerData reaches CPU task", "Worker postMessage returns result", "Main thread remains available"] } }} />} flow={<AdvancedFlow title="Worker message flow" steps={["Main Thread", "Worker", "workerData", "CPU task", "postMessage", "Main Thread"]} />} />;
+}
+
+export default WorkerThreadsLesson;

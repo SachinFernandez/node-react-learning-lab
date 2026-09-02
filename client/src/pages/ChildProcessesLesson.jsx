@@ -1,0 +1,12 @@
+import { Box, Stack, Typography } from "@mui/material";
+import CodeBlock from "../components/common/CodeBlock.jsx";
+import { AdvancedExplorer, AdvancedFlow, AdvancedLesson } from "../components/common/AdvancedLesson.jsx";
+import SectionCard from "../components/common/SectionCard.jsx";
+
+function ChildProcessesLesson() {
+  const learn = <Stack spacing={2}><SectionCard title="Separate OS processes"><Typography color="text.secondary">The built-in <Box component="code">child_process</Box> module starts separate operating-system processes. <Box component="code">spawn</Box> streams output, <Box component="code">exec</Box> runs a command with buffered output, and <Box component="code">fork</Box> starts another Node.js process with IPC support.</Typography></SectionCard><SectionCard title="Isolation and communication"><Typography color="text.secondary">Child processes are isolated from the parent’s normal JavaScript memory. They communicate through stdin, stdout, stderr, or IPC. Workers use separate JS threads within one process; child processes use separate OS processes.</Typography></SectionCard></Stack>;
+  const code = <SectionCard title="Spawn a Node child process"><CodeBlock filename="parent.js">{"import { spawn } from \"node:child_process\";\n\nconst child = spawn(\"node\", [\"script.js\"]);\n\nchild.stdout.on(\"data\", (data) => {\n  console.log(data.toString());\n});"}</CodeBlock><Typography variant="body2" color="text.secondary" sx={{ mt: 1.5 }}>Use <Box component="code">fork()</Box> when the child is another Node.js process and IPC is useful.</Typography></SectionCard>;
+  return <AdvancedLesson lesson="28" title="Child Processes" subtitle="Learn how Node.js starts isolated operating-system processes." learn={learn} code={code} tryIt={<AdvancedExplorer title="Conceptual Process Explorer" subtitle="No operating-system commands are executed." options={{ child: { label: "Child Process", title: "Parent and child flow", steps: ["Parent starts child with spawn or fork", "Child performs isolated work", "stdout or IPC carries result", "Parent handles result"] } }} />} flow={<AdvancedFlow title="Child process flow" steps={["Node Parent", "spawn or fork", "Child Process", "Work", "stdout or IPC", "Parent"]} />} />;
+}
+
+export default ChildProcessesLesson;
