@@ -2,6 +2,8 @@ import cors from "cors";
 import express from "express";
 import healthRoutes from "./routes/healthRoutes.js";
 import nodeRoutes from "./routes/nodeRoutes.js";
+import taskRoutes from "./routes/taskRoutes.js";
+import errorHandler from "./middleware/errorHandler.js";
 
 const app = express();
 
@@ -16,6 +18,7 @@ app.use(
 
 app.use("/api/health", healthRoutes);
 app.use("/api/node", nodeRoutes);
+app.use("/api/tasks", taskRoutes);
 
 app.get("/", (request, response) => {
   response.json({
@@ -23,5 +26,7 @@ app.get("/", (request, response) => {
     message: "Node.js Learning Lab API",
   });
 });
+
+app.use(errorHandler);
 
 export default app;
