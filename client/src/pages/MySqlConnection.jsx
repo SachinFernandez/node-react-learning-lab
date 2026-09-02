@@ -1,0 +1,12 @@
+import { Box, Stack, Typography } from "@mui/material";
+import CodeBlock from "../components/common/CodeBlock.jsx";
+import { DatabaseExplorer, DatabaseFlow, DatabaseLesson } from "../components/common/DatabaseLesson.jsx";
+import SectionCard from "../components/common/SectionCard.jsx";
+
+function MySqlConnection() {
+  const learn = <Stack spacing={2}><SectionCard title="Why databases?"><Typography color="text.secondary">A database keeps application data beyond a process restart. MySQL stores structured data and lets an application query, create, update, and remove records.</Typography></SectionCard><SectionCard title="Connection pools"><Typography color="text.secondary">A pool manages reusable connections. Rather than holding one connection per request forever, an operation can obtain a connection, run work, then release it for reuse. Pooling helps applications manage concurrent database work.</Typography></SectionCard><SectionCard title="Safe queries"><Typography color="text.secondary">Keep database configuration separate from application logic and use parameterized queries. The <Box component="code">execute</Box> or <Box component="code">query</Box> APIs run statements; <Box component="code">getConnection</Box> and <Box component="code">release</Box> are used when direct connection control is needed.</Typography></SectionCard></Stack>;
+  const code = <SectionCard title="Conceptual pool setup"><CodeBlock filename="config/database.js">{"import mysql from \"mysql2/promise\";\n\nconst pool = mysql.createPool({\n  host,\n  user,\n  password,\n  database,\n  waitForConnections: true,\n  connectionLimit: 10\n});"}</CodeBlock></SectionCard>;
+  return <DatabaseLesson lesson="19" title="MySQL Connection" subtitle="Learn how Node.js applications connect to MySQL through reusable connection pools." learn={learn} code={code} tryIt={<DatabaseExplorer title="Conceptual Connection Lifecycle" subtitle="No real database call is made from React." options={{ pool: { label: "Request", title: "Connection pool lifecycle", steps: ["Request reaches the application", "Pool supplies an available connection", "Query runs against MySQL", "Connection is released for reuse"] } }} />} flow={<DatabaseFlow title="Connection flow" steps={["Request", "Pool", "Available DB connection", "Query", "Release and reuse"]} />} />;
+}
+
+export default MySqlConnection;
